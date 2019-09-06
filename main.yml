@@ -1,0 +1,17 @@
+---
+# Build virtualenv
+- hosts: all
+  tasks:
+  - name: Install virtualenv package
+    apt: name={{ item }}  state=installed
+    with_items: 
+      - python3-venv
+      - python3-pip
+  - name: Initiate virtualenv
+    pip: virtualenv=/home/myenv 
+         virtualenv_python=python3
+         requirements={{ app_path }}/requirements.txt
+  - name: Archive the myenv
+    archive:
+      path: /home/myenv
+      dest: /home/myenv.zip
